@@ -1,0 +1,20 @@
+language: python
+sudo: false
+python:
+    - 2.7
+    - 3.4
+    - 3.5
+    - 3.6
+install:
+    - pip install coverage
+    - pip install pytest
+    - pip install pytest-cov
+    - pip install python-coveralls
+    - pip install flake8
+    - python setup.py install
+script:
+    - python -m flake8 binarytree/__init__.py
+    - python -m doctest binarytree/__init__.py
+    - py.test tests.py --cov=binarytree
+after_success:
+    - coveralls
