@@ -10,8 +10,7 @@ struct Node
 };
  
 // Utility function to create new Node
-Node *newNode(int key)
-{
+Node *newNode(int key) {
     Node *temp = new Node;
     temp->key  = key;
     temp->parent = NULL;
@@ -57,17 +56,41 @@ int getTreeDepth(Node *created[], int n)
 	for (int i = 0; i < n; i++)
 	{
 		int currentDepth = getNodeDepth(created[i], depthTable);
-		cout<<"currentDepth: "<<currentDepth<<endl;
 		if (maxDepth < currentDepth)
 			maxDepth = currentDepth;
 	}
 	return maxDepth;
 }
 
-Node *getChild()
+
+vector<Node*> getChild(Node *node, Node *nodeArray[], int n)
 {
+    vector<Node*> childVector;
+    
+    if (node==NULL)
+        return childVector;
+    for (int i=n-1; i>-1; i--)            
+        if (nodeArray[i]->parent == node)
+            childVector.push_back(nodeArray[i]);
+    return childVector;
+}
+
+Node *getNextSibling(Node *node, Node *nodeArray[], int n)
+{
+    Node* nextSibling;
+    if (node == NULL)
+        nextSibling = NULL;
+    for (int i=0; i<n; i++)
+        if (nodeArray[i] == node)
+            break;
+    for (int j=0; j<n; j++) 
+        if (nodeArray[j] == node)
+            nextSibling = node;
+    return node;
+
 }
  
+
 // Creates tree from parent[0..n-1] and returns root of the created tree
 void createTree(int parent[], int n, Node *nodeArray[])
 {
@@ -76,10 +99,8 @@ void createTree(int parent[], int n, Node *nodeArray[])
     // as NULL
     for (int i=0; i<n; i++)
     	nodeArray[i] = NULL;
- 
     for (int i=0; i<n; i++)
         createNode(parent, i, nodeArray);
-
 }
  
 //For adding new line in a program
@@ -95,8 +116,6 @@ int main()
     Node *nodeArray[n];
     createTree(parent, n, nodeArray);
     cout<<getTreeDepth(nodeArray, n)<<endl;
-
-    //cout << "Inorder Traversal of constructed tree\n";
-    //inorder(root);
-    //newLine();
+    getChild(nodeArray[0], nodeArray, n);
 }
+    
